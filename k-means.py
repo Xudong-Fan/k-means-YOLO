@@ -83,13 +83,13 @@ def write_anchors_to_file(centroids,X,anchor_file,input_shape,yolo_version):
     #there should not be comma after last anchor, that's why
     f.write('%0.2f,%0.2f\n'%(anchors[sorted_indices[-1:],0],anchors[sorted_indices[-1:],1]))
     
-    f.write('%f\n'%(avg_IOU(X,centroids)))
+    f.write('avg IoU: %f\n'%(avg_IOU(X,centroids)))
     print()
  
 def k_means(X,centroids,eps,anchor_file,input_shape,yolo_version):
     
     N = X.shape[0] #ground truth的个数
-    iterations = 100
+    iterations = 200
     print("centroids.shape",centroids)
     k,dim = centroids.shape  #anchor的个数k以及w,h两维，dim默认等于2
     prev_assignments = np.ones(N)*(-1)    #对每个ground truth分配初始标签
@@ -126,7 +126,7 @@ def k_means(X,centroids,eps,anchor_file,input_shape,yolo_version):
  
 def main(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('-filelist', default = r'.\records.txt',
+    parser.add_argument('-filelist', default = r'.\yolov3.txt',
                         help='path to filelist\n' ) #这个文件是由运行scripts文件夹中的    
                              #voc_label.py文件得到的，scripts文件夹中会生成几个TXT文件。
                              #python voc_label.py
